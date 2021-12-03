@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Modal from "../components/Modal";
 import Feed from "../components/Feed";
 import Header from "../components/Header";
 
@@ -12,9 +13,9 @@ export default function Home() {
 
       <Header />
 
-      <Feed/>
+      <Feed />
 
-      {/* Modal */}
+      <Modal />
     </div>
   );
 }

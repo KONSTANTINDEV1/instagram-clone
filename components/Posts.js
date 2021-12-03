@@ -1,42 +1,33 @@
 import Post from "./Post";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { db } from "../firebase";
+import { useEffect, useState } from "react";
 
-const posts = [
-  {
-    id: "123",
-    username: "iamtinotaylor",
-    userImg:
-      "https://scontent.fsvg1-1.fna.fbcdn.net/v/t1.6435-9/57170593_10158662133513438_6158280871016136704_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=G5b_P34CQ9gAX-8KqLh&_nc_ht=scontent.fsvg1-1.fna&oh=b108c132192654ee7942170b2e1860e7&oe=618CBB6B",
-    img: "https://scontent.fsvg1-1.fna.fbcdn.net/v/t1.6435-9/57170593_10158662133513438_6158280871016136704_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=G5b_P34CQ9gAX-8KqLh&_nc_ht=scontent.fsvg1-1.fna&oh=b108c132192654ee7942170b2e1860e7&oe=618CBB6B",
-    caption: "This is dope!",
-  },
-  {
-    id: "123",
-    username: "iamtinotaylor",
-    userImg:
-      "https://scontent.fsvg1-1.fna.fbcdn.net/v/t1.6435-9/57170593_10158662133513438_6158280871016136704_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=G5b_P34CQ9gAX-8KqLh&_nc_ht=scontent.fsvg1-1.fna&oh=b108c132192654ee7942170b2e1860e7&oe=618CBB6B",
-    img: "https://scontent.fsvg1-1.fna.fbcdn.net/v/t1.6435-9/57170593_10158662133513438_6158280871016136704_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=G5b_P34CQ9gAX-8KqLh&_nc_ht=scontent.fsvg1-1.fna&oh=b108c132192654ee7942170b2e1860e7&oe=618CBB6B",
-    caption: "This is dope!",
-  },
-  {
-    id: "123",
-    username: "iamtinotaylor",
-    userImg:
-      "https://scontent.fsvg1-1.fna.fbcdn.net/v/t1.6435-9/57170593_10158662133513438_6158280871016136704_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=G5b_P34CQ9gAX-8KqLh&_nc_ht=scontent.fsvg1-1.fna&oh=b108c132192654ee7942170b2e1860e7&oe=618CBB6B",
-    img: "https://scontent.fsvg1-1.fna.fbcdn.net/v/t1.6435-9/57170593_10158662133513438_6158280871016136704_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=G5b_P34CQ9gAX-8KqLh&_nc_ht=scontent.fsvg1-1.fna&oh=b108c132192654ee7942170b2e1860e7&oe=618CBB6B",
-    caption: "This is dope!",
-  },
-];
 function Posts() {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(
+    () =>
+      onSnapshot(
+        query(collection(db, "posts"), orderBy("timestamp", "desc")),
+        (snapshot) => {
+          setPosts(snapshot.docs);
+        }
+      ),
+    [db]
+  );
+
+  console.log(posts);
   return (
     <div>
       {posts.map((post) => (
         <Post
           key={post.id}
           id={post.id}
-          username={post.username}
-          userImg={post.img}
-          img={post.img}
-          caption={post.caption}
+          username={post.data().username}
+          userImg={post.data().profileImage}
+          img={post.data().image}
+          caption={post.data().caption}
         />
       ))}
     </div>
