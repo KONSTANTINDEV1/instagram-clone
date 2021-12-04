@@ -25,5 +25,6 @@ export default NextAuth({
       return session;
     },
   },
+  // ADD A SECRET KEY TO AVOID NEXT AUTH ERROR
   secret: process.env.SECRET,
 });
