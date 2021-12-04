@@ -10,12 +10,17 @@ export default NextAuth({
     }),
     // ...add more providers here
   ],
+  // If you want to have a custom page... include this..
   pages: {
     signIn: "/auth/signin",
   },
+
   callbacks: {
-    async session({ session, user, token }) {
-      session.user.username = session.user.name.split(" ").join("").toLowerCase();
+    async session({ session, token, user }) {
+      session.user.username = session.user.name
+        .split(" ")
+        .join("")
+        .toLowerCase();
       session.user.uid = token.sub;
       return session;
     },
